@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qait.qag.qagrest.exception.mappeer.SimpleTemplateJsonParent;
+import com.qait.qag.formgenerator.simpletemplate.domain.SimpleTemplateJsonParent;
 
 
 public class GenerateFormTest {
@@ -17,7 +17,7 @@ public class GenerateFormTest {
 				
 		String content = mapper.writeValueAsString(jsonObject);
 		System.out.println(content);
-
+					
 		TestUtil.sendRequest(url, content, "POST");
 				
 	}
