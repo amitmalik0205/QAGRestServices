@@ -3,7 +3,7 @@ package com.qait.qag.qagrest.services;
 import java.io.IOException;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.qait.qag.formgenerator.common.util.QAGFormGeneratorUtil;
 import com.qait.qag.formgenerator.generator.ITemplateFrontController;
 import com.qait.qag.formgenerator.simpletemplate.domain.SimpleTemplateJsonParent;
+import com.qait.qag.formgenerator.simpletemplate.dto.StudentFormDetailDto;
 import com.qait.qag.formgenerator.simpletemplate.generator.SimpleTemplateFrontController;
 
 
@@ -24,12 +25,11 @@ public class QAGRestService {
 
 	private static final Logger logger = Logger.getLogger(QAGRestService.class);
 	
-	Integer digits = null;
-	
+
 	@Path("test")
-	@GET
+	@POST
 	@Produces(MediaType.TEXT_PLAIN)
-	public String text() throws IOException {
+	public String text(StudentFormDetailDto reponse) throws IOException {
 		return "Its working";
 	}
 	
@@ -37,10 +37,16 @@ public class QAGRestService {
 	@POST
 	@Path("generate-form")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response generateForm(SimpleTemplateJsonParent jsonParent) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response generateForm(@HeaderParam("Authorization") String key, SimpleTemplateJsonParent jsonParent) {
 		
 		String response = null;
+		
+		QAGRestResponse restResponse = new QAGRestResponse();
+		
+		restResponse.setCode("error");
+		
+		restResponse.setMessage("Error while generation the form");
 		
 		try {
 			
@@ -54,25 +60,33 @@ public class QAGRestService {
 				
 			}	else {
 				
-				return Response.ok(errors).build(); 
+				restResponse.setCode("error");
+				
+				restResponse.setMessage(errors);
+				
+				return Response.ok(restResponse).build(); 
 			}
 
 		} catch (Exception e) {
 			
 			e.printStackTrace();		
 			
-			logger.fatal(QAGFormGeneratorUtil.getExceptionDescriptionString(e));
+			logger.fatal(QAGFormGeneratorUtil.getExceptionDescriptionString(e));					
 			
-			throw new WebApplicationException(Response.ok("Error while generation the form").build());
+			throw new WebApplicationException(Response.ok(restResponse).build());
 		}
 		
-		if(response != null) {			
+		if(response != null) {		
 			
-			return Response.ok(response).build();
+			restResponse.setCode("success");
+			
+			restResponse.setMessage(response);
+			
+			return Response.ok(restResponse).build();
 			
 		} else {
 			
-			return Response.ok("Error while generation the form").build();
+			return Response.ok(restResponse).build();
 		}			
 	}
 }

@@ -15,6 +15,7 @@ public class TestUtil {
 		HttpURLConnection conn = null;
         conn = (HttpURLConnection) url.openConnection();
 	    conn.setRequestProperty("Content-Type", "application/json");
+	    conn.setRequestProperty ("Authorization", "1234567");
 	    conn.setRequestMethod(method);
 	     
 	    if(method.equals("POST")) {
