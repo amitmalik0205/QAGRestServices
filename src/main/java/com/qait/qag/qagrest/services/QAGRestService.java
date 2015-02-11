@@ -46,11 +46,11 @@ public class QAGRestService {
 		
 		restResponse.setCode("error");
 		
-		restResponse.setMessage("Error while generation the form");
+		restResponse.setMessage("Error while generatiing the form");
 		
 		try {
 			
-			ITemplateFrontController frontController = new SimpleTemplateFrontController(jsonParent);
+			ITemplateFrontController frontController = new SimpleTemplateFrontController(jsonParent,key);
 			
 			String errors = frontController.validateFormData();
 			
