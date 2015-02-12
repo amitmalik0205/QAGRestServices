@@ -3,7 +3,6 @@ package com.qait.qag.qagrest.services;
 import java.io.IOException;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,7 +37,7 @@ public class QAGRestService {
 	@Path("generate-form")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response generateForm(@HeaderParam("Authorization") String key, SimpleTemplateJsonParent jsonParent) {
+	public Response generateForm(SimpleTemplateJsonParent jsonParent) {
 		
 		String response = null;
 		
@@ -50,7 +49,7 @@ public class QAGRestService {
 		
 		try {
 			
-			ITemplateFrontController frontController = new SimpleTemplateFrontController(jsonParent,key);
+			ITemplateFrontController frontController = new SimpleTemplateFrontController(jsonParent);
 			
 			String errors = frontController.validateFormData();
 			
