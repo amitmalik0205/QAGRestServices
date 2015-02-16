@@ -61,6 +61,13 @@ public class QAGRestService {
 				
 				restResponse.setCode("error");
 				
+				errors = errors.trim();
+				
+				if(errors.charAt(errors.length()-1) == ',') {
+					
+					errors = errors.substring(0, errors.length()-1);
+				}
+				
 				restResponse.setMessage(errors);
 				
 				return Response.ok(restResponse).build(); 
